@@ -1,11 +1,10 @@
 class ::Hash
-  def nested_hash_value(key) 
-    obj = self
-    if obj.respond_to?(:key?) && obj.key?(key) && !obj[key].is_a?(Hash)
+  def nested_hash_value(obj, key) 
+    if obj.respond_to?(:key?) && obj.key?(key) )
       obj[key]
     elsif obj.respond_to?(:each)
       result = nil
-      obj.find { |child| result = child.last.nested_hash_value(key) }
+      obj.find { |*child| result = nested_hash_value(child.last, key) }
       result
     end
   end
